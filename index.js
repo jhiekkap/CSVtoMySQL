@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 app.use(cors())
 app.use(bodyParser.json())
 
-const options = {
+const options = { 
   host: "remotemysql.com",
   port: "3306",
   user: config.DBUSERNAME,
@@ -58,8 +58,20 @@ app.get('/all/:table', async (req, res) => {
 
     con.query(`SELECT * FROM ${table}`, function (err, result, fields) {
       if (err) throw err;
-      console.log('RESULT', result.length, 'ROWS', fields.map(field => field.name));
-      res.json({ result, fields })
+      const headers = fields.map(field => field.name)
+      const rows = []
+      console.log(result)
+      result.forEach(row => {
+        let values = []
+        for (let [key, value] of Object.entries(row)) {
+         // console.log(`${key}: ${value}`);
+         values.push(value)
+        }
+        rows.push(values)
+     })
+      console.log('ROWS', rows)
+      console.log('RESULT', result.length, 'ROWS, FIELDS:', headers ); 
+      res.json({ headers, rows })
     })
     if (con) con.end()
 
