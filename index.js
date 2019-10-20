@@ -18,11 +18,11 @@ const options = {
 
 //const con = mysql.createConnection(options);
 
-const values = [7, 1921, '2H', 23]
+//const values = [7, 1921, '2H', 23]
 //const table = 'JPAA'
-const fields = ['alueID', 'vuosi', 'talotyyppi', 'koko'].join(',')
+//const fields = ['alueID', 'vuosi', 'talotyyppi', 'koko'].join(',')
 
-const insert = (table, fields, values) => {
+/* const insert = (table, fields, values) => {
   let valueCommas = ''
   for (let i = 1; i <= values.length; i++) {
     valueCommas = valueCommas.concat('?')
@@ -42,7 +42,7 @@ const insert = (table, fields, values) => {
     }
     con.end()
   })
-}
+} */
 
 app.get('/all/:table', async (req, res) => {
   console.log(req.params)
@@ -93,19 +93,25 @@ app.get('/all', async (req, res) => {
 })
 
 app.post('/create', async (req, res) => {
-  const { table, columns } = req.body
-  console.log('CREATE TABLE', table, columns)
+  const { newTableName, columns, table } = req.body
+  //console.log('CREATE TABLE', newTableName, columns, table)
+  const sql = `CREATE TABLE ${newTableName} (${columns
+    .map(col => `${col.name} ${col.type}`)
+    .join(',')})`
+  console.log(sql)
+  console.log(table)
   try {
     const con = await mysql.createConnection(options)
-    /* con.query(`CREATE TABLE ${table} ${columns}`, function(err, result, fields) { */
-      con.query(`CREATE TABLE Persons (
-    PersonID int,
-    LastName varchar(255),
-    FirstName varchar(255))`, function(err, result, fields) {
+    con.query(sql, function(err, result, fields) {
       if (err) throw err
       console.log('TABLE CREATED', result)
+    })  
+    table.forEach(row => {
+      const sql = `INSERT INTO ${newTableName} (${columns.map(col => col.name).join(',')}) VALUES (${columns.map(col => '?').join(',')})`
+      console.log(sql)
+      con.query(sql, row.map(cell => isNaN(cell) ? cell : parseInt(cell)))
     })
-    
+
     if (con) con.end()
   } catch (error) {
     console.log(error)
