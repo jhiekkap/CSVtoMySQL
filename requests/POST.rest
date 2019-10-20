@@ -1,0 +1,20 @@
+POST http://localhost:3001/create
+Content-Type: application/json
+
+{
+   "table":"PERSONS",
+   "columns":[
+      {
+         "name":"PersonID",
+         "type":"int"
+      },
+      {
+         "name":"FistName",
+         "type":"varchar(255)"
+      },
+      {
+         "name":"LastName",
+         "type":"varchar(255)"
+      }
+   ]
+}

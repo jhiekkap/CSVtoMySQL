@@ -1,0 +1,7 @@
+PUT http://localhost:3002/books/14
+Content-Type: application/json
+
+{
+    "author":  "Dorma",
+    "title": "zzsszzasföö"
+}
