@@ -4,14 +4,14 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
-
+ 
 app.use(cors())
 app.use(bodyParser.json())
 
 const options = { 
   host: "remotemysql.com",
   port: "3306",
-  user: config.DBUSERNAME,
+  user: config.DBUSERNAME, 
   password: config.DBPASSWORD,
   database: "kW8zfl2jBR"
 }
@@ -58,9 +58,9 @@ app.get('/all/:table', async (req, res) => {
 
     con.query(`SELECT * FROM ${table}`, function (err, result, fields) {
       if (err) throw err;
-      const headers = fields.map(field => field.name)
+      const columns = fields.map(field => field.name)
       const rows = []
-      console.log(result)
+      //console.log(result)
       result.forEach(row => {
         let values = []
         for (let [key, value] of Object.entries(row)) {
@@ -70,8 +70,8 @@ app.get('/all/:table', async (req, res) => {
         rows.push(values)
      })
       console.log('ROWS', rows)
-      console.log('RESULT', result.length, 'ROWS, FIELDS:', headers ); 
-      res.json({ headers, rows })
+      console.log(result.length, 'ROWS',columns.length, 'COLUMNS:') 
+      res.json({ columns, rows })
     })
     if (con) con.end()
 
