@@ -28,7 +28,7 @@ const options = {
     valueCommas = valueCommas.concat('?')
     if (i !== values.length) {
       valueCommas = valueCommas.concat(',')
-    }
+    } 
   }
   con.connect(function(err) {
     if (err) throw err
