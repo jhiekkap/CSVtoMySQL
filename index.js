@@ -90,7 +90,7 @@ app.get('/all', async (req, res) => {
   } catch (error) {
     console.log(error)
   }
-})
+}) 
 
 app.post('/create', async (req, res) => {
   const { newTableName, columns, table } = req.body
