@@ -57,7 +57,7 @@ app.get('/all/:table', async (req, res) => {
       if (err) throw err
       const columns = fields.map(field => field.name)
       const rows = []
-      //console.log(result)
+      //console.log(result) 
       result.forEach(row => {
         let values = []
         for (let [key, value] of Object.entries(row)) {
@@ -95,24 +95,25 @@ app.get('/all', async (req, res) => {
 app.post('/create', async (req, res) => {
   const { newTableName, columns, table } = req.body
   //console.log('CREATE TABLE', newTableName, columns, table)
-  const sql = `CREATE TABLE ${newTableName} (${columns
+  const sql = `CREATE TABLE ${newTableName} (ID int NOT NULL AUTO_INCREMENT, ${columns
     .map(col => `${col.name} ${col.type}`)
-    .join(',')})`
+    .join(',')}, PRIMARY KEY (ID))`
   console.log(sql)
-  console.log(table)
-  try {
+  //console.log(table)
+  try { 
     const con = await mysql.createConnection(options)
     con.query(sql, function(err, result, fields) {
       if (err) throw err
-      console.log('TABLE CREATED', result)
+      //console.log('TABLE CREATED', result)
     })  
     table.forEach(row => {
       const sql = `INSERT INTO ${newTableName} (${columns.map(col => col.name).join(',')}) VALUES (${columns.map(col => '?').join(',')})`
-      console.log(sql)
+      //console.log(sql)
       con.query(sql, row.map(cell => isNaN(cell) ? cell : parseInt(cell)))
     })
 
     if (con) con.end()
+    res.send('new table succesfully saved to database')
   } catch (error) {
     console.log(error)
   }
