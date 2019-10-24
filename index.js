@@ -108,7 +108,7 @@ app.post('/create', async (req, res) => {
     })  
     table.forEach(row => {
       const sql = `INSERT INTO ${newTableName} (${columns.map(col => col.name).join(',')}) VALUES (${columns.map(col => '?').join(',')})`
-      //console.log(sql)
+      //rconsole.log(sql)
       con.query(sql, row.map(cell => isNaN(cell) ? cell : parseInt(cell)))
     })
 
