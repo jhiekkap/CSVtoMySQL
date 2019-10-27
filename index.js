@@ -9,7 +9,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 const options = {
-  host: 'remotemysql.com',
+  host: 'remotemysql.com', 
   port: '3306',
   user: config.DBUSERNAME,
   password: config.DBPASSWORD,
