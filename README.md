@@ -1,0 +1,4 @@
+-git clone ...
+-cd server
+-npm install
+-node index
